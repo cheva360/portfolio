@@ -118,10 +118,13 @@ h1 {
     display: none;
     position: fixed;
     inset: 0;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .project-modal.open {
@@ -132,7 +135,7 @@ h1 {
     position: relative;
     display: flex;
     width: min(90vw, 2000px);
-    max-height: 90vh;
+    max-height: 90dvh;
     background: rgba(0, 0, 0, 0);
     border-radius: 0px;
     text-align: left;
@@ -169,17 +172,22 @@ h1 {
 }
 
 .modal-close {
-    right: 0;
+    position: fixed;
+    top: max(0.5em, env(safe-area-inset-top));
+    right: 0.75em;
+    z-index: 1001;
     border: none;
     background: none;
     font-size: 2rem;
     line-height: 1;
     cursor: pointer;
     color: white;
+    padding: 0.25em 0.5em;
     transform: scale(2);
-    position: absolute;
-    translate: -1em -11em;
-    z-index: 1001;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 #modal-description a {

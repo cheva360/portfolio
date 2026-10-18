@@ -9,7 +9,7 @@ EMAIL: sebasam3@uci.edu
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="author" content="Sebastian Magana">
     <meta name="description" content="Audio Portfolio">
     <!-- you would link to an external stylesheet here! -->
@@ -198,11 +198,13 @@ EMAIL: sebasam3@uci.edu
         }
 
         modal.classList.add("open");
+        document.body.classList.add("modal-open");
         modal.setAttribute("aria-hidden", "false");
     }
 
     function closeModal() {
         modal.classList.remove("open");
+        document.body.classList.remove("modal-open");
         modal.setAttribute("aria-hidden", "true");
         stopMedia();
     }
