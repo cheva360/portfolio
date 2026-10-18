@@ -18,6 +18,7 @@ EMAIL: sebasam3@uci.edu
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!--External CSS-->
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
     <!--W3C validator:http://validator.w3.org/check?uri=referer-->
 
 
@@ -65,18 +66,21 @@ EMAIL: sebasam3@uci.edu
                     <img src="images/DemoReel.jpg" alt="Demo Reel" class="img-fluid">
                 </div>
                 <div class="col-md-6 col-sm-12 images" data-title="Roach Game"
-                     data-embed="https://drive.google.com/file"
+                     data-link="https://cheva360.itch.io/roach-game"
+                     data-embed="https://savedly.net/api/stream/be35fy3z?t=0.G7CNc4NxpEPc4f4ScfHrmUvUJKaEtaI9LbogZTz7jxM"
                      data-description="Worked in collaboration with my Professor &lt;a href=&quot;https://www.linkedin.com/in/lindenreid/&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;Travis Linden Reid&lt;/a&gt;. Mix of recordings for gameplay sound effects, synthesized sounds for typewriter dialogue, and 18 unique distorted speech synthesized and subtitled lines for the main villain. Uses unique system that matches speech rate and pauses in audio with typewriter text.<br><br>My Roles<br>- SFX Artist<br>- Sound Designer<br>- Sound Engineer">
                     <img src="images/RoachGame.png" alt="Roach Game" class="img-fluid">
                 </div>
                 <div class="col-md-6 col-sm-12 images" data-title="Insectarium"
-                     data-embed="https://drive.google.com/file/d/1hXo-idCTX9lXMLNzYvqc_IcTM3MdwTNQ/preview"
+                     data-link="https://cheva360.itch.io/insectarium"
+                     data-embed="https://savedly.net/api/stream/pr9r5xup?t=0.e91UfOI0gOX44A3J3BgIzAFcrjJlH9ZxwmJJkitgOrM"
                      data-description="For Insectarium I was responsible for all the sound design and the soundtrack, as well as implementing the sounds. The sound effects were a mix of my own recordings, synthesized UI sounds, and 3 speech synthesized and distorted dialogues.<br><br>My Roles<br>- SFX Artist<br>- Sound Designer<br>- Sound Engineer<br>- Music Composer/Producer<br>- Programmer">
                     <img src="images/InsectariumMain.png" alt="Insectarium" class="img-fluid">
                 </div>
 
                 <div class="col-md-6 col-sm-12 images" data-title="AI Vs. Artists"
-                     data-embed="https://drive.google.com/file"
+                     data-link="https://store.steampowered.com/app/4614490/AI_VS_ARTISTS/"
+                     data-embed="https://savedly.net/api/stream/9a2nka2f?t=0.MBbulxHoGXfq6TFBpg6nZJjd1OgNU0sW556hNpfyooU"
                      data-description="Foley recordings for cutscenes. Recorded a multitude of sound effects for ambient and UI sounds.<br><br>My Roles<br>- SFX/Foley Artist<br>- Sound Designer<br>- Sound Engineer">
                     <img src="images/AVACropped.png" alt="AI Vs. Artists" class="img-fluid">
                 </div>
@@ -97,15 +101,17 @@ EMAIL: sebasam3@uci.edu
             <button id="modal-close" class="modal-close" aria-label="Close">&times;</button>
             <div class="modal-video">
                 <iframe id="modal-embed"
-                        style="width:100%; aspect-ratio:16/9; border:0;"
+                        style="width:100%; aspect-ratio:16/9; border:0; display:none;"
                         allow="autoplay; fullscreen"
                         allowfullscreen
                         title="Project video"></iframe>
+                <video id="modal-video" playsinline controls
+                       style="width:100%; aspect-ratio:16/9; display:none;"></video>
             </div>
             <div class="modal-info">
                 <h2 id="modal-title"></h2>
                 <p id="modal-description"></p>
-                <p>DEMO REELS ARE WIP</p>
+                <!--<p>DEMO REELS ARE WIP</p>-->
             </div>
         </div>
     </div>
@@ -131,18 +137,65 @@ EMAIL: sebasam3@uci.edu
     });
     </script>
 
+    <!--Plyr must load before the modal script-->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
     <!--modal script-->
-    <!--modal script needs to be accessible with tab and enter keys?-->
     <script>
     const modal = document.getElementById("project-modal");
     const modalEmbed = document.getElementById("modal-embed");
+    const modalVideo = document.getElementById("modal-video");
     const modalTitle = document.getElementById("modal-title");
     const modalDesc = document.getElementById("modal-description");
 
+    // Plyr is optional: if it fails to load, native controls are used
+    const player = (typeof Plyr !== "undefined") ? new Plyr(modalVideo) : null;
+
+    function isStream(url) {
+        return url.includes("savedly.net/api/stream");
+    }
+
+    function videoWrapper() {
+        return modalVideo.closest(".plyr") || modalVideo;
+    }
+
+    function stopMedia() {
+        modalEmbed.removeAttribute("src");
+        if (player) player.stop(); else modalVideo.pause();
+    }
+
     function openModal(item) {
-        modalTitle.textContent = item.dataset.title;
+        const link = item.dataset.link;
+        if (link) {
+            modalTitle.innerHTML = "";
+            const a = document.createElement("a");
+            a.href = link;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = item.dataset.title;
+            modalTitle.appendChild(a);
+        } else {
+            modalTitle.textContent = item.dataset.title;
+        }
         modalDesc.innerHTML = item.dataset.description;
-        modalEmbed.src = item.dataset.embed;
+
+        const url = item.dataset.embed || "";
+        const wrap = videoWrapper();
+
+        if (url && isStream(url)) {
+            modalEmbed.style.display = "none";
+            wrap.style.display = "block";
+            if (player) {
+                player.source = { type: "video", sources: [{ src: url, type: "video/mp4" }] };
+            } else {
+                modalVideo.src = url;
+            }
+        } else {
+            wrap.style.display = "none";
+            modalEmbed.style.display = url ? "block" : "none";
+            if (url) modalEmbed.src = url;
+        }
+
         modal.classList.add("open");
         modal.setAttribute("aria-hidden", "false");
     }
@@ -150,7 +203,7 @@ EMAIL: sebasam3@uci.edu
     function closeModal() {
         modal.classList.remove("open");
         modal.setAttribute("aria-hidden", "true");
-        modalEmbed.removeAttribute("src"); // stops playback
+        stopMedia();
     }
 
     document.querySelectorAll(".images").forEach(item => {
