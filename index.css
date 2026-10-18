@@ -36,7 +36,7 @@ body::before {
 .socials {
     display: flex;
     justify-content: flex-end;
-    font-size: 1.1em;
+    font-size: 1.3em;
 }
 
 .socials a {
@@ -221,9 +221,10 @@ h1 {
     }
 
     .socials {
-        font-size: 0.9em;
-/*        font size change*/
-        
+        flex-flow: row wrap;
+        flex-direction:row;
+        font-size: 1em;
+        /*font size change*/
     }
 }
 
