@@ -235,17 +235,19 @@ body.modal-open {
         font-size: 1em;
         /*font size change3*/
     }
-}
-
-@media (max-width: 768px) {
     .project-modal-content {
         flex-direction: column;
         font-size: 1.2rem;
     }
+
     #modal-title {
         font-size: 2.5rem;
     }
-}
+
+    .modal-info {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
 .plyr {
     --plyr-color-main: green; /* accent color: play button, progress, hover */
