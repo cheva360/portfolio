@@ -233,7 +233,6 @@ body.modal-open {
         flex-flow: row wrap;
         flex-direction:row;
         font-size: 1em;
-        /*font size change4*/
     }
     .project-modal-content {
         flex-direction: column;
