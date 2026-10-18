@@ -131,10 +131,8 @@ h1 {
 .project-modal-content {
     position: relative;
     display: flex;
-    gap: 1.5rem;
     width: min(90vw, 2000px);
     max-height: 90vh;
-    padding: 0rem;
     background: rgba(0, 0, 0, 0);
     border-radius: 0px;
     text-align: left;
@@ -144,7 +142,8 @@ h1 {
 
 .modal-video {
     flex: 1 1 100%;
-    padding: 2em;
+    translate: 0 2.5em;
+    padding-bottom: 1.5em;
 }
 
 .modal-video video {
@@ -170,7 +169,6 @@ h1 {
 }
 
 .modal-close {
-    position: absolute;
     right: 0;
     border: none;
     background: none;
@@ -179,6 +177,9 @@ h1 {
     cursor: pointer;
     color: white;
     transform: scale(2);
+    position: absolute;
+    translate: -1em -11em;
+    z-index: 1001;
 }
 
 #modal-description a {
@@ -224,7 +225,7 @@ h1 {
         flex-flow: row wrap;
         flex-direction:row;
         font-size: 1em;
-        /*font size change2*/
+        /*font size change3*/
     }
 }
 
